@@ -8,7 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
-import  com.eliza.exhibition_project.util.UserNotFountException;
+import com.eliza.exhibition_project.util.NotFoundException.UserNotFountException;
 
 @Service
 @Transactional(readOnly = true)

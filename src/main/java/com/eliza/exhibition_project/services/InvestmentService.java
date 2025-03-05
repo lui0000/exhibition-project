@@ -1,11 +1,9 @@
 package com.eliza.exhibition_project.services;
 
 import com.eliza.exhibition_project.models.Investment;
-import com.eliza.exhibition_project.models.Painting;
 import com.eliza.exhibition_project.models.User;
 import com.eliza.exhibition_project.repositories.InvestmentRepository;
-import com.eliza.exhibition_project.repositories.PaintingRepository;
-import com.eliza.exhibition_project.util.PaintingNotFoundException;
+import com.eliza.exhibition_project.util.NotFoundException.PaintingNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

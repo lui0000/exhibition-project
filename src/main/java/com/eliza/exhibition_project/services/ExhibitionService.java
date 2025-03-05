@@ -6,7 +6,7 @@ import com.eliza.exhibition_project.models.User;
 import com.eliza.exhibition_project.repositories.ExhibitionRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import  com.eliza.exhibition_project.util.ExhibitionNotFoundException;
+import com.eliza.exhibition_project.util.NotFoundException.ExhibitionNotFoundException;
 
 import java.util.List;
 import java.util.Optional;
