@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -28,15 +29,13 @@ import java.util.Map;
 
 @RestController
 public class RegisterController {
-    private final AuthenticationManager authenticationManager;
     private final JwtUtil jwtUtil;
     private final UserService userService;
     private final ModelMapper modelMapper;
     private final UserValidator userValidator;
 
     @Autowired
-    public RegisterController(AuthenticationManager authenticationManager, JwtUtil jwtUtil, UserService userService, ModelMapper modelMapper, UserValidator userValidator) {
-        this.authenticationManager = authenticationManager;
+    public RegisterController(JwtUtil jwtUtil, UserService userService, ModelMapper modelMapper, UserValidator userValidator) {
         this.jwtUtil = jwtUtil;
         this.userService = userService;
         this.modelMapper = modelMapper;
@@ -45,40 +44,35 @@ public class RegisterController {
 
     @PostMapping("/register")
     public ResponseEntity<?> performRegister(@RequestBody @Valid UserDto userDto, BindingResult bindingResult) {
-
         userValidator.validate(userDto, bindingResult);
 
-        if(bindingResult.hasErrors()) {
-            StringBuilder stringBuilder = new StringBuilder();
-            List<FieldError> errors = bindingResult.getFieldErrors();
-            for(FieldError error: errors) {
-                stringBuilder.append(error.getField()).append(" - ")
-                        .append(error.getDefaultMessage())
-                        .append(";");
-            }
-            throw  new UserNotCreatedException(stringBuilder.toString());
+        if (bindingResult.hasErrors()) {
+            return ResponseEntity.badRequest().body(Map.of("error", "Validation failed"));
         }
-
 
         User user = convertToUser(userDto);
         userService.registerUser(user.getName(), user.getEmail(), user.getPasswordHash(), user.getRole());
-        String token = jwtUtil.generateToken(userDto.getName(), userDto.getRole());
+        String token = jwtUtil.generateToken(userDto.getEmail(), userDto.getRole()); // Теперь передаем email
+
         return ResponseEntity.ok(Map.of("jwt-token", token));
     }
-
 
     @PostMapping("/login")
-    public ResponseEntity<?> performLogin(@RequestBody LoginUserDto loginUserDto) {
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(loginUserDto.getName(), loginUserDto.getPasswordHash())
-        );
+    public ResponseEntity<?> performLogin(@RequestBody @Valid LoginUserDto loginUserDto, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return ResponseEntity.badRequest().body(Map.of("error", "Validation failed"));
+        }
 
-        String username = authentication.getName();
-        Role role = ((User) authentication.getPrincipal()).getRole();
-        String token = jwtUtil.generateToken(username, role);
-
-        return ResponseEntity.ok(Map.of("jwt-token", token));
+        try {
+            User user = userService.login(loginUserDto.getEmail(), loginUserDto.getPasswordHash());
+            String token = jwtUtil.generateToken(user.getEmail(), user.getRole());
+            return ResponseEntity.ok(Map.of("jwt-token", token));
+        } catch (BadCredentialsException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", e.getMessage()));
+        }
     }
+
+
 
 
 

@@ -40,18 +40,15 @@ public class JwtFilter extends OncePerRequestFilter {
             }
 
             try {
-                // Извлекаем имя пользователя и роль из токена
-                String username = jwtUtil.validateTokenAndRetrieveClaim(jwt);
+                String email = jwtUtil.validateTokenAndRetrieveClaim(jwt);
                 Role role = jwtUtil.validateTokenAndRetrieveRole(jwt);
 
-                // Загружаем пользователя
-                UserDetails userDetails = customUserDetailsService.loadUserByUsername(username);
+                UserDetails userDetails = customUserDetailsService.loadUserByUsername(email);
 
-                // Создаем аутентификацию с ролью
                 UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
                         userDetails,
                         null,
-                        Collections.singleton(new SimpleGrantedAuthority(role.name())) // Устанавливаем роль
+                        Collections.singleton(new SimpleGrantedAuthority(role.name()))
                 );
 
                 if (SecurityContextHolder.getContext().getAuthentication() == null) {

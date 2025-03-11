@@ -18,16 +18,14 @@ public class JwtUtil {
     @Value("${jwt_secret}")
     private String SECRET_KEY;
 
-    /**
-     * Генерация JWT-токена с именем пользователя и ролью.
-     */
-    public String generateToken(String username, Role role) {
+
+    public String generateToken( String email, Role role) {
         Date expirationDate = Date.from(ZonedDateTime.now().plusMinutes(60).toInstant());
 
         return JWT.create()
                 .withSubject("User details")
-                .withClaim("username", username)
-                .withClaim("role", role.name()) // Добавляем роль в токен
+                .withClaim("email", email)
+                .withClaim("role", role.name())
                 .withIssuedAt(new Date())
                 .withIssuer("springapp")
                 .withExpiresAt(expirationDate)

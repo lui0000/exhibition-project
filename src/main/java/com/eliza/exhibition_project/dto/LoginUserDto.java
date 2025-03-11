@@ -4,18 +4,20 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 
 public class LoginUserDto {
-    @NotEmpty(message = "Name should not be empty")
-    private String name;
+
+    @NotEmpty(message = "Email should not be empty")
+    @Email(message = "The email must be a valid email address")
+    private String email;
 
     @NotEmpty(message = "Password hash should not be empty")
     private String passwordHash;
 
-    public String getName() {
-        return name;
+    public  String getEmail() {
+        return email;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getPasswordHash() {

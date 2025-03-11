@@ -13,13 +13,8 @@ import java.util.List;
 import java.util.Optional;
 import com.eliza.exhibition_project.util.NotFoundException.UserNotFountException;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.Optional;
 
 @Service
 @Transactional(readOnly = true)
@@ -67,18 +62,18 @@ public class UserService {
         save(user);
     }
 
-    // отдельный метод для login
     @Transactional
-    public User login(String name, String password) {
-
-        User user = userRepository.findByName(name)
+    public User login(String email, String password) {
+        User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+
         if (!passwordEncoder.matches(password, user.getPasswordHash())) {
             throw new BadCredentialsException("Invalid password");
         }
 
         return user;
     }
+
 
 
 }
