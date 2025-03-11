@@ -68,6 +68,7 @@ public class UserService {
     }
 
     // отдельный метод для login
+    @Transactional
     public User login(String name, String password) {
 
         User user = userRepository.findByName(name)
