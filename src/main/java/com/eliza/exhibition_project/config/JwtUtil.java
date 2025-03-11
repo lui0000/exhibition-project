@@ -42,8 +42,9 @@ public class JwtUtil {
                 .build();
 
         DecodedJWT jwt = verifier.verify(token);
-        return jwt.getClaim("username").asString();
+        return jwt.getClaim("email").asString();
     }
+
 
     /**
      * Валидация токена и извлечение роли пользователя.
