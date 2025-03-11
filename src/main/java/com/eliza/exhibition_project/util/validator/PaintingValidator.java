@@ -4,9 +4,11 @@ import com.eliza.exhibition_project.dto.PaintingDto;
 import com.eliza.exhibition_project.dto.UserDto;
 import com.eliza.exhibition_project.services.PaintingService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
+@Component
 public class PaintingValidator implements Validator {
 
     private final PaintingService paintingService;

@@ -34,8 +34,6 @@ public class User {
     @Column(name = "role", nullable = false)
     private Role role = Role.ARTIST;
 
-
-
     @OneToMany(mappedBy = "organizer")
     private List<Exhibition> exhibitions;
 

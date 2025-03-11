@@ -4,9 +4,11 @@ import com.eliza.exhibition_project.dto.ExhibitionDto;
 import com.eliza.exhibition_project.dto.UserDto;
 import com.eliza.exhibition_project.services.ExhibitionService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
+@Component
 public class ExhibitionValidator implements Validator {
 
     private final ExhibitionService exhibitionService;

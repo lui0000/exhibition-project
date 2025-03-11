@@ -3,9 +3,11 @@ package com.eliza.exhibition_project.util.validator;
 import com.eliza.exhibition_project.dto.UserDto;
 import com.eliza.exhibition_project.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
+@Component
 public class UserValidator implements Validator {
 
     private final UserService userService;

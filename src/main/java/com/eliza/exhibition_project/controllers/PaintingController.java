@@ -29,7 +29,7 @@ import java.util.stream.Collectors;
 
 
 @RestController
-@RequestMapping("Painting")
+@RequestMapping("painting")
 public class PaintingController {
     private final PaintingService paintingService;
     private final ModelMapper modelMapper;
