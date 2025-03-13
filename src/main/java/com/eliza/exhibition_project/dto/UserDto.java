@@ -1,6 +1,7 @@
 package com.eliza.exhibition_project.dto;
 
 import com.eliza.exhibition_project.models.Role;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.Email;
@@ -19,8 +20,7 @@ public class UserDto {
     @NotEmpty(message = "Password hash should not be empty")
     private String passwordHash;
 
-    @NotNull(message = "Role should not be null")
-    @Enumerated(EnumType.STRING)
+    @JsonProperty("role")
     private Role role = Role.ARTIST;
 
 

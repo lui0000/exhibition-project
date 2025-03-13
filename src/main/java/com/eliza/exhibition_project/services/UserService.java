@@ -67,6 +67,10 @@ public class UserService {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
+        // Логирование для отладки
+        System.out.println("Input password: " + password);
+        System.out.println("Stored password hash: " + user.getPasswordHash());
+
         if (!passwordEncoder.matches(password, user.getPasswordHash())) {
             throw new BadCredentialsException("Invalid password");
         }

@@ -54,7 +54,7 @@ public class RegisterController {
         userService.registerUser(user.getName(), user.getEmail(), user.getPasswordHash(), user.getRole());
         String token = jwtUtil.generateToken(userDto.getEmail(), userDto.getRole()); // Теперь передаем email
 
-        return ResponseEntity.ok(Map.of("jwt-token", token));
+        return ResponseEntity.ok(Map.of("jwtToken", token));
     }
 
     @PostMapping("/login")
@@ -66,7 +66,7 @@ public class RegisterController {
         try {
             User user = userService.login(loginUserDto.getEmail(), loginUserDto.getPasswordHash());
             String token = jwtUtil.generateToken(user.getEmail(), user.getRole());
-            return ResponseEntity.ok(Map.of("jwt-token", token));
+            return ResponseEntity.ok(Map.of("jwtToken", token));
         } catch (BadCredentialsException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", e.getMessage()));
         }
