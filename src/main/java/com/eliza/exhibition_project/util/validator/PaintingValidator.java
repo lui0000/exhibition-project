@@ -1,7 +1,6 @@
 package com.eliza.exhibition_project.util.validator;
 
 import com.eliza.exhibition_project.dto.PaintingDto;
-import com.eliza.exhibition_project.dto.UserDto;
 import com.eliza.exhibition_project.services.PaintingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

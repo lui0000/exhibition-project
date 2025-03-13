@@ -1,29 +1,21 @@
 package com.eliza.exhibition_project.controllers;
 
 import com.eliza.exhibition_project.dto.PaintingDto;
-import com.eliza.exhibition_project.dto.UserDto;
 import com.eliza.exhibition_project.models.Painting;
-import com.eliza.exhibition_project.models.User;
 import com.eliza.exhibition_project.services.PaintingService;
-import com.eliza.exhibition_project.services.UserService;
 import com.eliza.exhibition_project.util.ErrorResponse.PaintingErrorResponse;
-import com.eliza.exhibition_project.util.ErrorResponse.UserErrorResponse;
 import com.eliza.exhibition_project.util.NotCreatedException.PaintingNotCreatedException;
-import com.eliza.exhibition_project.util.NotCreatedException.UserNotCreatedException;
 import com.eliza.exhibition_project.util.NotFoundException.PaintingNotFoundException;
 import com.eliza.exhibition_project.util.validator.PaintingValidator;
-import com.eliza.exhibition_project.util.validator.UserValidator;
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
-import java.awt.*;
 import java.util.List;
 import java.util.stream.Collectors;
 

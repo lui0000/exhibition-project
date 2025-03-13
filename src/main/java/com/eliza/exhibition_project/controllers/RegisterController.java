@@ -3,8 +3,7 @@ package com.eliza.exhibition_project.controllers;
 
 import com.eliza.exhibition_project.config.JwtUtil;
 import com.eliza.exhibition_project.dto.LoginUserDto;
-import com.eliza.exhibition_project.dto.UserDto;
-import com.eliza.exhibition_project.models.Role;
+import com.eliza.exhibition_project.dto.UserRegisterDto;
 import com.eliza.exhibition_project.models.User;
 import com.eliza.exhibition_project.services.UserService;
 import com.eliza.exhibition_project.util.ErrorResponse.UserErrorResponse;
@@ -15,16 +14,11 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -43,7 +37,7 @@ public class RegisterController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<?> performRegister(@RequestBody @Valid UserDto userDto, BindingResult bindingResult) {
+    public ResponseEntity<?> performRegister(@RequestBody @Valid UserRegisterDto userDto, BindingResult bindingResult) {
         userValidator.validate(userDto, bindingResult);
 
         if (bindingResult.hasErrors()) {
@@ -91,7 +85,7 @@ public class RegisterController {
         );
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
-    public User convertToUser(UserDto userDto) {
+    public User convertToUser(UserRegisterDto userDto) {
         return this.modelMapper.map(userDto, User.class);
     }
 

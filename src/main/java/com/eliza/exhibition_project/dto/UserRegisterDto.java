@@ -5,7 +5,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 
-public class UserDto {
+public class UserRegisterDto {
+
     @NotEmpty(message = "Name should not be empty")
     private String name;
 
@@ -13,16 +14,27 @@ public class UserDto {
     @Email(message = "The email must be a valid email address")
     private String email;
 
+    @NotEmpty(message = "Password hash should not be empty")
+    private String passwordHash;
 
     @JsonProperty("role")
     private Role role = Role.ARTIST;
 
-    public String getName() {
-        return name;
+
+    public Role getRole() {
+        return role;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
+    public String getPasswordHash() {
+        return passwordHash;
+    }
+
+    public void setPasswordHash(String passwordHash) {
+        this.passwordHash = passwordHash;
     }
 
     public String getEmail() {
@@ -33,11 +45,11 @@ public class UserDto {
         this.email = email;
     }
 
-    public Role getRole() {
-        return role;
+    public String getName() {
+        return name;
     }
 
-    public void setRole(Role role) {
-        this.role = role;
+    public void setName(String name) {
+        this.name = name;
     }
 }
