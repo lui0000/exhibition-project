@@ -19,31 +19,34 @@ public class JwtUtil {
     private String SECRET_KEY;
 
 
-    public String generateToken( String email, Role role) {
+    public String generateToken(String email, Role role, int userId) {
         Date expirationDate = Date.from(ZonedDateTime.now().plusMinutes(60).toInstant());
 
         return JWT.create()
                 .withSubject("User details")
                 .withClaim("email", email)
                 .withClaim("role", role.name())
+                .withClaim("user_id", userId)  // Добавляем user_id в JWT
                 .withIssuedAt(new Date())
                 .withIssuer("springapp")
                 .withExpiresAt(expirationDate)
                 .sign(Algorithm.HMAC256(SECRET_KEY));
     }
 
+
     /**
      * Валидация токена и извлечение имени пользователя.
      */
-    public String validateTokenAndRetrieveClaim(String token) throws JWTVerificationException {
+    public int validateTokenAndRetrieveUserId(String token) throws JWTVerificationException {
         JWTVerifier verifier = JWT.require(Algorithm.HMAC256(SECRET_KEY))
                 .withSubject("User details")
                 .withIssuer("springapp")
                 .build();
 
         DecodedJWT jwt = verifier.verify(token);
-        return jwt.getClaim("email").asString();
+        return jwt.getClaim("user_id").asInt();
     }
+
 
 
     /**
@@ -58,4 +61,15 @@ public class JwtUtil {
         DecodedJWT jwt = verifier.verify(token);
         return Role.valueOf(jwt.getClaim("role").asString()); // Извлекаем роль из токена
     }
+
+    public String validateTokenAndRetrieveClaim(String token) throws JWTVerificationException {
+        JWTVerifier verifier = JWT.require(Algorithm.HMAC256(SECRET_KEY))
+                .withSubject("User details")
+                .withIssuer("springapp")
+                .build();
+
+        DecodedJWT jwt = verifier.verify(token);
+        return jwt.getClaim("email").asString(); // Получаем email из токена
+    }
+
 }

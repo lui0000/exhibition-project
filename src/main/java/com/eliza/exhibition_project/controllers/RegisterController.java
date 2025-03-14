@@ -20,6 +20,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 public class RegisterController {
@@ -46,7 +47,14 @@ public class RegisterController {
 
         User user = convertToUser(userDto);
         userService.registerUser(user.getName(), user.getEmail(), user.getPasswordHash(), user.getRole());
-        String token = jwtUtil.generateToken(userDto.getEmail(), userDto.getRole()); // Теперь передаем email
+
+        Optional<User> savedUserOptional = userService.findByEmail(user.getEmail());
+
+        User savedUser = savedUserOptional.orElseThrow(() ->
+                new UsernameNotFoundException("User not found after registration"));
+
+        String token = jwtUtil.generateToken(savedUser.getEmail(), savedUser.getRole(), savedUser.getId());
+
 
         return ResponseEntity.ok(Map.of("jwtToken", token));
     }
@@ -59,14 +67,12 @@ public class RegisterController {
 
         try {
             User user = userService.login(loginUserDto.getEmail(), loginUserDto.getPasswordHash());
-            String token = jwtUtil.generateToken(user.getEmail(), user.getRole());
+            String token = jwtUtil.generateToken(user.getEmail(), user.getRole(), user.getId());
             return ResponseEntity.ok(Map.of("jwtToken", token));
         } catch (BadCredentialsException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", e.getMessage()));
         }
     }
-
-
 
 
 

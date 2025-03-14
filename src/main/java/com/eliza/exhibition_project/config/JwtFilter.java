@@ -42,6 +42,7 @@ public class JwtFilter extends OncePerRequestFilter {
             try {
                 String email = jwtUtil.validateTokenAndRetrieveClaim(jwt);
                 Role role = jwtUtil.validateTokenAndRetrieveRole(jwt);
+                int userId = jwtUtil.validateTokenAndRetrieveUserId(jwt); // Теперь достаем user_id
 
                 UserDetails userDetails = customUserDetailsService.loadUserByUsername(email);
 
@@ -54,6 +55,10 @@ public class JwtFilter extends OncePerRequestFilter {
                 if (SecurityContextHolder.getContext().getAuthentication() == null) {
                     SecurityContextHolder.getContext().setAuthentication(authentication);
                 }
+
+                // Можно сохранить user_id в request, если он понадобится в контроллерах
+                request.setAttribute("user_id", userId);
+
             } catch (Exception e) {
                 response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid or Expired JWT Token");
                 return;
