@@ -30,9 +30,8 @@ public class Painting {
     @JoinColumn(name = "exhibition_id", referencedColumnName = "exhibition_id", nullable = false)
     private Exhibition exhibition;
 
-    @Lob
     @Column(name = "image_url", nullable = false)
-    private byte[] photoData;
+    private String photoData;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
@@ -88,11 +87,11 @@ public class Painting {
         this.exhibition = exhibition;
     }
 
-    public byte[] getPhotoData() {
+    public String getPhotoData() {
         return photoData;
     }
 
-    public void setPhotoData(byte[] photoData) {
+    public void setPhotoData(String photoData) {
         this.photoData = photoData;
     }
 

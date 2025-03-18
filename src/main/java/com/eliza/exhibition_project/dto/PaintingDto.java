@@ -13,8 +13,7 @@ public class PaintingDto {
     private String description;
     private UserRegisterDto artist;
     private ExhibitionDto exhibition;
-    @Lob
-    private byte[] photoData;
+    private String photoData;
 
     public String getTitle() {
         return title;
@@ -56,11 +55,11 @@ public class PaintingDto {
         this.exhibition = exhibition;
     }
 
-    public byte[] getPhotoData() {
+    public String getPhotoData() {
         return photoData;
     }
 
-    public void setPhotoData(byte[] photoData) {
+    public void setPhotoData(String photoData) {
         this.photoData = photoData;
     }
 }

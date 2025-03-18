@@ -7,6 +7,7 @@ import jakarta.validation.constraints.NotNull;
 import javax.xml.crypto.Data;
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "exhibitions")
@@ -38,6 +39,9 @@ public class Exhibition {
     @ManyToOne
     @JoinColumn(name = "organizer_id", referencedColumnName = "user_id") // Исправлено на organizer_id
     private User organizer;
+
+    @OneToMany(mappedBy = "exhibition")
+    private List<Painting> exhibition;
 
 
     public Exhibition() {
@@ -90,5 +94,13 @@ public class Exhibition {
 
     public void setEndDate(LocalDate endDate) {
         this.endDate = endDate;
+    }
+
+    public List<Painting> getExhibition() {
+        return exhibition;
+    }
+
+    public void setExhibition(List<Painting> exhibition) {
+        this.exhibition = exhibition;
     }
 }

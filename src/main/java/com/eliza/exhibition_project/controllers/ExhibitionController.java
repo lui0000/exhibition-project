@@ -1,6 +1,7 @@
 package com.eliza.exhibition_project.controllers;
 
 import com.eliza.exhibition_project.dto.ExhibitionDto;
+import com.eliza.exhibition_project.dto.ExhibitionWithPaintingDTO;
 import com.eliza.exhibition_project.models.Exhibition;
 import com.eliza.exhibition_project.services.ExhibitionService;
 import com.eliza.exhibition_project.util.ErrorResponse.ExhibitionErrorResponse;
@@ -16,6 +17,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -35,8 +37,8 @@ public class ExhibitionController {
     }
 
     @GetMapping
-    public List<ExhibitionDto> getExhibitions() {
-        return exhibitionService.findAll().stream().map(this::convertToExhibitionDto).collect(Collectors.toList());
+    public List<ExhibitionWithPaintingDTO> getExhibitions() {
+        return new ArrayList<>(exhibitionService.getExhibitionsWithApprovedImage());
     }
 
     @GetMapping("/{id}")
