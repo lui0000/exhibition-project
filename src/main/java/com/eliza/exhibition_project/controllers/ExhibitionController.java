@@ -48,7 +48,7 @@ public class ExhibitionController {
 
     @PostMapping("/add")
     public ResponseEntity<HttpStatus> create(@RequestBody @Valid ExhibitionDto exhibitionDto, BindingResult bindingResult) {
-        exhibitionValidator.validate(exhibitionDto, bindingResult);
+//        exhibitionValidator.validate(exhibitionDto, bindingResult);
 
         if (bindingResult.hasErrors()) {
             StringBuilder stringBuilder = new StringBuilder();
@@ -65,6 +65,7 @@ public class ExhibitionController {
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
+
     @ExceptionHandler
     private ResponseEntity<ExhibitionErrorResponse> handleException(ExhibitionNotFoundException e) {
         ExhibitionErrorResponse response = new ExhibitionErrorResponse(
@@ -78,6 +79,7 @@ public class ExhibitionController {
         ExhibitionErrorResponse response = new ExhibitionErrorResponse(
                 e.getMessage(), System.currentTimeMillis()
         );
+        //status 400
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 

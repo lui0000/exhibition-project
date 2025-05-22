@@ -24,8 +24,7 @@ public class ExhibitionDto {
     @Temporal(TemporalType.DATE)
     private LocalDate endDate;
 
-
-    private User organizer;
+    private UserDto organizer;
 
     public String getTitle() {
         return title;
@@ -59,11 +58,11 @@ public class ExhibitionDto {
         this.endDate = endDate;
     }
 
-    public User getOrganizer() {
+    public UserDto getOrganizer() {
         return organizer;
     }
 
-    public void setOrganizer(User organizer) {
+    public void setOrganizer(UserDto organizer) {
         this.organizer = organizer;
     }
 }

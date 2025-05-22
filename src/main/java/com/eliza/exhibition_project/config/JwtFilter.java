@@ -42,7 +42,7 @@ public class JwtFilter extends OncePerRequestFilter {
             try {
                 String email = jwtUtil.validateTokenAndRetrieveClaim(jwt);
                 Role role = jwtUtil.validateTokenAndRetrieveRole(jwt);
-                int userId = jwtUtil.validateTokenAndRetrieveUserId(jwt); // Теперь достаем user_id
+                int userId = jwtUtil.validateTokenAndRetrieveUserId(jwt);
 
                 UserDetails userDetails = customUserDetailsService.loadUserByUsername(email);
 

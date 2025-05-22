@@ -8,6 +8,8 @@ import com.eliza.exhibition_project.models.PaintingStatus;
 import com.eliza.exhibition_project.models.User;
 import com.eliza.exhibition_project.repositories.ExhibitionRepository;
 import com.eliza.exhibition_project.repositories.PaintingRepository;
+import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.eliza.exhibition_project.util.NotFoundException.ExhibitionNotFoundException;
@@ -22,6 +24,10 @@ public class ExhibitionService {
     private final ExhibitionRepository exhibitionRepository;
     private final UserService userService;
     private final PaintingRepository paintingRepository;
+
+    @Autowired
+    private HttpServletRequest request;
+
 
     public ExhibitionService(ExhibitionRepository exhibitionRepository, UserService userService, PaintingRepository paintingRepository) {
         this.exhibitionRepository = exhibitionRepository;
@@ -58,10 +64,19 @@ public class ExhibitionService {
 
     @Transactional
     public void save(Exhibition exhibition) {
+        Integer organizerId = (Integer) request.getAttribute("user_id");
+        if (organizerId == null) {
+            throw new RuntimeException("Organizer ID not found in request");
+        }
+
+        User organizer = userService.findById(organizerId)
+                .orElseThrow(() -> new RuntimeException("User not found with ID: " + organizerId));
+
+        exhibition.setOrganizer(organizer);
         enrichExhibition(exhibition);
         exhibitionRepository.save(exhibition);
-
     }
+
 
     public void enrichExhibition(Exhibition exhibition) {
         Optional<User> exhibitionOptional = userService.findByName(exhibition.getOrganizer().getName());
