@@ -1,24 +1,23 @@
 package com.eliza.exhibition_project.dto;
 
 import com.eliza.exhibition_project.models.Exhibition;
-import com.eliza.exhibition_project.models.User;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 
 public class InvestmentDto {
 
-    private User investor;
+    private UserDto investor;
     private Exhibition exhibition;
 
     @NotNull(message = "Amount should not be null")
     @Positive(message = "Amount should be a positive number")
     private double amount;
 
-    public User getInvestor() {
+    public UserDto getInvestor() {
         return investor;
     }
 
-    public void setInvestor(User investor) {
+    public void setInvestor(UserDto investor) {
         this.investor = investor;
     }
 

@@ -62,6 +62,8 @@ public class ExhibitionService {
         return foundExhibition.orElseThrow(ExhibitionNotFoundException::new);
     }
 
+
+
     @Transactional
     public void save(Exhibition exhibition) {
         Integer organizerId = (Integer) request.getAttribute("user_id");

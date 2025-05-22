@@ -30,9 +30,6 @@ public class Investment {
     @Column(name = "amount", nullable = false)
     private double amount;
 
-    @Column(name = "status")
-    @Enumerated(EnumType.STRING)
-    private InvestmentStatus status = InvestmentStatus.PENDING;
 
 
 
@@ -77,14 +74,6 @@ public class Investment {
 
     public void setAmount(double amount) {
         this.amount = amount;
-    }
-
-    public InvestmentStatus getStatus() {
-        return status;
-    }
-
-    public void setStatus(InvestmentStatus status) {
-        this.status = status;
     }
 
     // equals, hashCode и toString

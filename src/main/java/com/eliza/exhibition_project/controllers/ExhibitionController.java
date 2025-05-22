@@ -45,6 +45,12 @@ public class ExhibitionController {
     public ExhibitionDto getExhibition(@PathVariable("id") int id) {
         return convertToExhibitionDto(exhibitionService.findOne(id));
     }
+    @GetMapping("/by-title")
+    public ExhibitionDto getExhibitionByTitle(@RequestParam("title") String title) {
+        Exhibition exhibition = exhibitionService.findByTitle(title)
+                .orElseThrow(ExhibitionNotFoundException::new);
+        return convertToExhibitionDto(exhibition);
+    }
 
     @PostMapping("/add")
     public ResponseEntity<HttpStatus> create(@RequestBody @Valid ExhibitionDto exhibitionDto, BindingResult bindingResult) {
