@@ -3,7 +3,9 @@ package com.eliza.exhibition_project.controllers;
 import com.eliza.exhibition_project.dto.PaintingDto;
 import com.eliza.exhibition_project.models.Painting;
 import com.eliza.exhibition_project.services.PaintingService;
+import com.eliza.exhibition_project.util.ErrorResponse.ExhibitionErrorResponse;
 import com.eliza.exhibition_project.util.ErrorResponse.PaintingErrorResponse;
+import com.eliza.exhibition_project.util.NotCreatedException.ExhibitionNotCreatedException;
 import com.eliza.exhibition_project.util.NotCreatedException.PaintingNotCreatedException;
 import com.eliza.exhibition_project.util.NotFoundException.PaintingNotFoundException;
 import com.eliza.exhibition_project.util.validator.PaintingValidator;
@@ -48,7 +50,7 @@ public class PaintingController {
 
     @PostMapping("/add")
     public ResponseEntity<HttpStatus> create(@RequestBody @Valid PaintingDto paintingDto, BindingResult bindingResult) {
-        paintingValidator.validate(paintingDto, bindingResult);
+//        paintingValidator.validate(paintingDto, bindingResult);
 
         if(bindingResult.hasErrors()) {
             StringBuilder stringBuilder = new StringBuilder();
@@ -82,6 +84,7 @@ public class PaintingController {
         PaintingErrorResponse response = new PaintingErrorResponse(
                 e.getMessage(), System.currentTimeMillis()
         );
+        //status 400
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 

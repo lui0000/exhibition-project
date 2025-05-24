@@ -1,6 +1,7 @@
 package com.eliza.exhibition_project.controllers;
 
 import com.eliza.exhibition_project.dto.ExhibitionDto;
+import com.eliza.exhibition_project.dto.ExhibitionDtoWithId;
 import com.eliza.exhibition_project.dto.ExhibitionWithPaintingDTO;
 import com.eliza.exhibition_project.models.Exhibition;
 import com.eliza.exhibition_project.services.ExhibitionService;
@@ -45,11 +46,11 @@ public class ExhibitionController {
     public ExhibitionDto getExhibition(@PathVariable("id") int id) {
         return convertToExhibitionDto(exhibitionService.findOne(id));
     }
-    @GetMapping("/by-title")
-    public ExhibitionDto getExhibitionByTitle(@RequestParam("title") String title) {
+    @GetMapping("/by-title/{title}")
+    public ExhibitionDtoWithId getExhibitionByTitle(@PathVariable("title") String title) {
         Exhibition exhibition = exhibitionService.findByTitle(title)
                 .orElseThrow(ExhibitionNotFoundException::new);
-        return convertToExhibitionDto(exhibition);
+        return convertToExhibitionDtoWithId(exhibition);
     }
 
     @PostMapping("/add")
@@ -95,6 +96,10 @@ public class ExhibitionController {
 
     private Exhibition convertToExhibition(ExhibitionDto exhibitionDto) {
         return modelMapper.map(exhibitionDto, Exhibition.class);
+    }
+
+    private ExhibitionDtoWithId convertToExhibitionDtoWithId(Exhibition exhibition) {
+        return modelMapper.map(exhibition, ExhibitionDtoWithId.class);
     }
 }
 

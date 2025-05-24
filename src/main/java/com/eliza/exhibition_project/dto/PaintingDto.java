@@ -11,7 +11,7 @@ public class PaintingDto {
 
     private String style;
     private String description;
-    private UserRegisterDto artist;
+    private UserDto artist;
     private ExhibitionDto exhibition;
     private String photoData;
 
@@ -39,11 +39,11 @@ public class PaintingDto {
         this.description = description;
     }
 
-    public UserRegisterDto getArtist() {
+    public UserDto getArtist() {
         return artist;
     }
 
-    public void setArtist(UserRegisterDto artist) {
+    public void setArtist(UserDto artist) {
         this.artist = artist;
     }
 
