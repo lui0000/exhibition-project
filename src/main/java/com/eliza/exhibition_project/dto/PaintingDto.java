@@ -1,5 +1,6 @@
 package com.eliza.exhibition_project.dto;
 
+import com.eliza.exhibition_project.models.Exhibition;
 import jakarta.persistence.Lob;
 import jakarta.validation.constraints.NotEmpty;
 
@@ -12,7 +13,7 @@ public class PaintingDto {
     private String style;
     private String description;
     private UserDto artist;
-    private ExhibitionDto exhibition;
+    private Exhibition exhibition;
     private String photoData;
 
     public String getTitle() {
@@ -47,11 +48,11 @@ public class PaintingDto {
         this.artist = artist;
     }
 
-    public ExhibitionDto getExhibition() {
+    public Exhibition getExhibition() {
         return exhibition;
     }
 
-    public void setExhibition(ExhibitionDto exhibition) {
+    public void setExhibition(Exhibition exhibition) {
         this.exhibition = exhibition;
     }
 

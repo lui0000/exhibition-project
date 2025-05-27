@@ -1,14 +1,15 @@
 package com.eliza.exhibition_project.services;
 
 
+import com.eliza.exhibition_project.dto.ExhibitionDto;
+import com.eliza.exhibition_project.dto.ExhibitionWithAdditionalInfoDto;
 import com.eliza.exhibition_project.dto.ExhibitionWithPaintingDTO;
-import com.eliza.exhibition_project.models.Exhibition;
-import com.eliza.exhibition_project.models.Painting;
-import com.eliza.exhibition_project.models.PaintingStatus;
-import com.eliza.exhibition_project.models.User;
+import com.eliza.exhibition_project.models.*;
 import com.eliza.exhibition_project.repositories.ExhibitionRepository;
+import com.eliza.exhibition_project.repositories.InvestmentRepository;
 import com.eliza.exhibition_project.repositories.PaintingRepository;
 import jakarta.servlet.http.HttpServletRequest;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,6 +18,7 @@ import com.eliza.exhibition_project.util.NotFoundException.ExhibitionNotFoundExc
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional(readOnly = true)
@@ -24,15 +26,19 @@ public class ExhibitionService {
     private final ExhibitionRepository exhibitionRepository;
     private final UserService userService;
     private final PaintingRepository paintingRepository;
+    private final InvestmentRepository investmentRepository;
+    private final ModelMapper modelMapper;
 
     @Autowired
     private HttpServletRequest request;
 
 
-    public ExhibitionService(ExhibitionRepository exhibitionRepository, UserService userService, PaintingRepository paintingRepository) {
+    public ExhibitionService(ExhibitionRepository exhibitionRepository, UserService userService, PaintingRepository paintingRepository, InvestmentRepository investmentRepository, ModelMapper modelMapper) {
         this.exhibitionRepository = exhibitionRepository;
         this.userService = userService;
         this.paintingRepository = paintingRepository;
+        this.investmentRepository = investmentRepository;
+        this.modelMapper = modelMapper;
     }
 
 
@@ -56,6 +62,45 @@ public class ExhibitionService {
 
         return exhibitionDTOs;
     }
+
+    public ExhibitionWithAdditionalInfoDto getExhibitionsWithAdditionalInfo(String name) {
+        Exhibition exhibition = findByTitle(name)
+                .orElseThrow(ExhibitionNotFoundException::new);
+
+        List<Painting> approvedPaintings = paintingRepository.findByExhibitionAndStatus(exhibition, PaintingStatus.APPROVED);
+        List<Investment> investments = investmentRepository.findByExhibition(exhibition);
+
+        List<String> artists = approvedPaintings.stream()
+                .map(painting -> painting.getArtist().getName())
+                .distinct()
+                .collect(Collectors.toList());
+
+        List<String> investors = investments.stream()
+                .map(investment -> investment.getInvestor().getName())
+                .distinct()
+                .collect(Collectors.toList());
+
+        List<String> paintingImages = approvedPaintings.stream()
+                .map(Painting::getPhotoData)
+                .collect(Collectors.toList());
+
+        String exhibitionPhoto = paintingImages.stream()
+                .findFirst()
+                .orElse(null);
+
+        ExhibitionDto exhibitionDto = modelMapper.map(exhibition, ExhibitionDto.class);
+
+        return new ExhibitionWithAdditionalInfoDto(
+                exhibitionPhoto,
+                exhibitionDto,
+                paintingImages,
+                artists,
+                investors
+        );
+    }
+
+
+
 
     public Exhibition findOne(int id){
         Optional<Exhibition> foundExhibition = exhibitionRepository.findById(id);

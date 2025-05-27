@@ -2,6 +2,7 @@ package com.eliza.exhibition_project.controllers;
 
 import com.eliza.exhibition_project.dto.ExhibitionDto;
 import com.eliza.exhibition_project.dto.ExhibitionDtoWithId;
+import com.eliza.exhibition_project.dto.ExhibitionWithAdditionalInfoDto;
 import com.eliza.exhibition_project.dto.ExhibitionWithPaintingDTO;
 import com.eliza.exhibition_project.models.Exhibition;
 import com.eliza.exhibition_project.services.ExhibitionService;
@@ -18,6 +19,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -53,6 +56,13 @@ public class ExhibitionController {
         return convertToExhibitionDtoWithId(exhibition);
     }
 
+    @GetMapping("/details/{title}")
+    public ExhibitionWithAdditionalInfoDto getDetails(@PathVariable("title") String title) {
+        String decodedTitle = URLDecoder.decode(title, StandardCharsets.UTF_8);
+        return exhibitionService.getExhibitionsWithAdditionalInfo(decodedTitle);
+    }
+
+
     @PostMapping("/add")
     public ResponseEntity<HttpStatus> create(@RequestBody @Valid ExhibitionDto exhibitionDto, BindingResult bindingResult) {
 //        exhibitionValidator.validate(exhibitionDto, bindingResult);
@@ -71,6 +81,8 @@ public class ExhibitionController {
         exhibitionService.save(convertToExhibition(exhibitionDto));
         return ResponseEntity.ok(HttpStatus.OK);
     }
+
+
 
 
     @ExceptionHandler
